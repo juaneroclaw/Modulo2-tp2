@@ -1,16 +1,16 @@
-const nextJest = require('next/jest');
-
-// Providing the path to your Next.js app to load next.config.js and .env files in your test environment
-const createJestConfig = nextJest({
-  dir: './', // this is the 'rootDir' and should point to the root of your Next.js project
-});
-
-const customJestConfig = {
-  rootDir: './', // Add this line if Jest does not recognize the root directory
-  coverageProvider: "v8",
-  testEnvironment: "jsdom",
-  // ... other options
+const config = {
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
+  testMatch: ['**/__tests__/**/*.test.ts?(x)'],
+  transform: {
+    '^.+\\.(ts|tsx|js|jsx)$': ['babel-jest', { presets: ['next/babel'] }],
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!lucide-react)'
+  ]
 };
 
-// Make sure you don't export the custom config directly, but call the createJestConfig function with the custom config
-module.exports = createJestConfig(customJestConfig);
+export default config;
